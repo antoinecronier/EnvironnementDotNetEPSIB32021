@@ -1,4 +1,5 @@
-﻿using ConsoleApp1.Inheritance;
+﻿using ConsoleApp1.Database;
+using ConsoleApp1.Inheritance;
 using ConsoleApp1.Serilization;
 using Newtonsoft.Json;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Data.Entity;
 
 namespace ConsoleApp1
 {
@@ -20,8 +22,50 @@ namespace ConsoleApp1
             //NewMethod1();
             //NewMethod2();
             //NewMethod3();
+            //NewMethod4();
 
-            NewMethod4();
+            //using (var db = new MyBdContext())
+            //{
+            //    foreach (var item in db.Users)
+            //    {
+            //        item.Roles.Add(db.Roles.Find(1));
+            //        item.Roles.Add(db.Roles.Find(2));
+
+            //        db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+            //    }
+
+            //    db.SaveChanges();
+            //}
+
+            using (var db = new MyBdContext())
+            {
+                foreach (var item in db.Users.Include(x => x.Roles))
+                {
+                    Console.WriteLine(item);
+                }
+
+                Console.WriteLine(db.Users.Find(3));
+
+                var user = db.Users.Find(4);
+
+                user.Firstname = "bonjour";
+                user.Lastname = "antoine";
+
+                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+
+                db.SaveChanges();
+
+                var user1 = db.Users.Find(5);
+
+                db.Users.Remove(user1);
+
+                db.SaveChanges();
+
+                foreach (var item in db.Users)
+                {
+                    Console.WriteLine(item);
+                }
+            }
 
             Console.ReadKey();
         }
