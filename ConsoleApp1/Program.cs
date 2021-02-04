@@ -1,5 +1,6 @@
 ﻿using ConsoleApp1.Inheritance;
 using ConsoleApp1.Serilization;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,17 +16,74 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            NewMethod();
-            NewMethod1();
-            NewMethod2();
+            //NewMethod();
+            //NewMethod1();
+            //NewMethod2();
+            //NewMethod3();
 
-            //serialize<Data>(new Data()
-            //{
-            //    MyProperty = 10,
-            //    MyProperty1 = "bonjour",
-            //    MyProperty2 = true,
-            //    MyProperty3 = 236548
-            //});
+            NewMethod4();
+
+            Console.ReadKey();
+        }
+
+        private static void NewMethod4()
+        {
+            var ser = serializeJSON(new Data()
+            {
+                MyProperty = 10,
+                MyProperty1 = "bonjour",
+                MyProperty2 = true,
+                MyProperty3 = 236548
+            });
+
+            string data = "{ }";
+            var desr = deserializeJSON<Data>(data);
+        }
+
+        public static string serializeJSON(Object obj)
+        {
+            String data = JsonConvert.SerializeObject(obj);
+            Console.WriteLine(data);
+            return data;
+        }
+
+        public static T deserializeJSON<T>(String flux)
+        {
+            T data = JsonConvert.DeserializeObject<T>(flux);
+            Console.WriteLine(data);
+            return data;
+        }
+
+        private static void NewMethod3()
+        {
+            var d21 = new Data2()
+            {
+                MyProperty = 10,
+                MyProperty1 = "bonjour",
+                MyProperty2 = true,
+                MyProperty3 = 236548
+            };
+
+            var d22 = new Data2()
+            {
+                MyProperty = 10,
+                MyProperty1 = "bonjour",
+                MyProperty2 = true,
+                MyProperty3 = 236548
+            };
+
+            var d23 = new Data2()
+            {
+                MyProperty = 10,
+                MyProperty1 = "bonjour",
+                MyProperty2 = true,
+                MyProperty3 = 236548
+            };
+
+            d23.Datas.Add(d21);
+            d23.Datas.Add(d22);
+
+            serializeXML<Data2>(d23);
 
             string data = "<?xml version=\"1.0\" encoding=\"utf - 8\"?>" +
                 "<Data xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
@@ -35,12 +93,10 @@ namespace ConsoleApp1
                     "<MyProperty3>236548</MyProperty3>" +
                 "</Data>";
 
-            Data objData = deserialize<Data>(data);
-
-            Console.ReadKey();
+            Data objData = deserializeXML<Data>(data);
         }
 
-        public static void serialize<T>(Object obj)
+        public static void serializeXML<T>(Object obj)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             using (StreamWriter writer = new StreamWriter(Console.OpenStandardOutput()))
@@ -51,7 +107,7 @@ namespace ConsoleApp1
             }
         }
 
-        public static T deserialize<T>(String flux)
+        public static T deserializeXML<T>(String flux)
         {
             byte[] byteArray = Encoding.ASCII.GetBytes(flux);
             MemoryStream stream = new MemoryStream(byteArray);
