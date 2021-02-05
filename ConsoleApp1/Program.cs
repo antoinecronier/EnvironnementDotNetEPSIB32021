@@ -23,20 +23,55 @@ namespace ConsoleApp1
             //NewMethod2();
             //NewMethod3();
             //NewMethod4();
+            //NewMethod5();
 
-            //using (var db = new MyBdContext())
-            //{
-            //    foreach (var item in db.Users)
-            //    {
-            //        item.Roles.Add(db.Roles.Find(1));
-            //        item.Roles.Add(db.Roles.Find(2));
+            using (var db = new BbContext1())
+            {
+                var first = db.Roles.First(x => x.Id >= 8);
+                var firstOrDefault = db.Roles.FirstOrDefault(x => x.Id < -2);
+                var single = db.Roles.Single(x => x.Name == "role2");
+                var singleOrDefault = db.Roles.SingleOrDefault(x => x.Name.StartsWith("N"));
+                var orderBy = db.Roles.OrderBy(x => x.Name);
 
-            //        db.Entry(item).State = System.Data.Entity.EntityState.Modified;
-            //    }
+                foreach (var item in orderBy)
+                {
+                    Console.WriteLine(item.Name);
+                }
 
-            //    db.SaveChanges();
-            //}
+                var orderByDescending = db.Roles.OrderByDescending(x => x.Name);
 
+                foreach (var item in orderByDescending)
+                {
+                    Console.WriteLine(item.Name);
+                }
+
+                var min = db.Roles.Min(x => x.Id);
+                var max = db.Roles.Max(x => x.Id);
+                var average = db.Roles.Average(x => x.Id);
+                var sum = db.Roles.Sum(x => x.Id);
+                var count = db.Roles.Count();
+                var where = db.Roles.Where(x => x.Id > 5 && x.Id < 15).ToList();
+
+                foreach (var item in where)
+                {
+                    Console.WriteLine(item.Name);
+                }
+
+                var select = db.Roles.Select(x => x.Name);
+
+                foreach (var item in select)
+                {
+                    Console.WriteLine(item);
+                }
+
+                var groupBy = db.Roles.GroupBy(x => x.Name.Contains("r"));
+            }
+
+            Console.ReadKey();
+        }
+
+        private static void NewMethod5()
+        {
             using (var db = new MyBdContext())
             {
                 foreach (var item in db.Users.Include(x => x.Roles))
@@ -66,8 +101,6 @@ namespace ConsoleApp1
                     Console.WriteLine(item);
                 }
             }
-
-            Console.ReadKey();
         }
 
         private static void NewMethod4()
