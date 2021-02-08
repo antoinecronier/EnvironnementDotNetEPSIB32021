@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "ShowView";
+}
+
+<h2>ShowView</h2>
+
+<h3>@ViewBag.Title</h3>
+<h3>@ViewBag.Test</h3>
+
+@if (ViewBag.User != null)
+{
+    <div>@ViewBag.User.Id</div>
+    <div>@ViewBag.User.Firstname</div>
+    <div>@ViewBag.User.Lastname</div>
+    <div>@ViewBag.User.CurrentRole.Name</div>
+}
+
+@if (@ViewBag.User.Roles.Count > 0)
+{
+    <div>Coucou</div>
+}
+else
+{
+    <div>Empty</div>
+}
+
+@foreach (var item in @ViewBag.User.Roles)
+{
+    <div> @item.Id </div>
+    <div>@item.Name</div>
+}
+
+@{ 
+    int a = 10;
+    int b = 2 * a;
+
+    for (int i = 0; i < 10; i++)
+    {
+        <div>@i</div>
+    }
+}
+
+<div>@b</div>
